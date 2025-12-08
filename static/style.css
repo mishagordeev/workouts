@@ -37,6 +37,11 @@ body {
     padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #f0f0f5;
 }
 
 #entries-table {
@@ -52,10 +57,118 @@ body {
     border-bottom: 1px solid #f0f0f5;
 }
 
+/* Стили для строки редактирования */
+.edit-form-row {
+    background-color: #f9fafb;
+}
+
+.edit-form {
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin: 6px 0;
+    background: white;
+}
+
+.edit-inputs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.edit-inputs input {
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    min-width: 100px;
+    flex: 1;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.edit-inputs input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.save-edit-btn {
+    background-color: #10b981;
+    color: white;
+}
+
+.save-edit-btn:hover {
+    background-color: #059669;
+}
+
+.cancel-edit-btn {
+    background-color: #ef4444;
+    color: white;
+}
+
+.cancel-edit-btn:hover {
+    background-color: #dc2626;
+}
+
+/* Стили для кнопок в основной строке */
+.edit-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #2563eb;
+}
+
+.del-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.del-btn:hover {
+    background-color: #dc2626;
+}
+
+/* Стили для формы добавления */
 .adder {
     display: flex;
     gap: 8px;
     align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f5;
 }
 
 .adder select,
@@ -63,20 +176,62 @@ body {
     padding: 8px;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    flex: 1;
+}
+
+.adder select:focus,
+.adder input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .adder button {
-    padding: 8px 12px;
+    padding: 8px 16px;
     border-radius: 6px;
     border: none;
     background: #2563eb;
     color: white;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    white-space: nowrap;
 }
 
-@media (max-width:520px) {
+.adder button:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 520px) {
     .adder {
         flex-direction: column;
         align-items: stretch;
+    }
+    
+    .edit-inputs {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .edit-inputs input {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .edit-buttons {
+        flex-direction: column;
+    }
+    
+    .edit-buttons button {
+        width: 100%;
+    }
+    
+    #entries-table th:nth-child(3),
+    #entries-table td:nth-child(3) {
+        min-width: 140px;
     }
 }

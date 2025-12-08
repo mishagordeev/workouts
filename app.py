@@ -18,8 +18,6 @@ app.debug = True
 
 db = firestore.client()
 
-app = Flask(__name__)
-
 @app.route('/')
 def index():
     return send_from_directory('static', 'index.html')
@@ -39,10 +37,9 @@ def get_entries():
         data['id'] = d.id
         items.append(data)
 
-# sort by name or timestamp if present
+    # sort by name or timestamp if present
     items = sorted(items, key=lambda x: x.get('index', ''))
     return jsonify(items)
-
 
 # API: add entry
 @app.route('/api/entries', methods=['POST'])
@@ -81,6 +78,56 @@ def add_entry():
     entries_col.document(entry_id).set(entry)
     entry['id'] = entry_id
     return jsonify(entry), 201
+
+# API: update entry
+@app.route('/api/entries/<date>/<entry_id>', methods=['PUT'])
+def update_entry(date, entry_id):
+    j = request.get_json() or {}
+    name = j.get('name')
+    weight = j.get('weight')
+    reps = j.get('reps')
+    sets = j.get('sets')
+
+    if not (name and weight is not None and reps is not None and sets is not None):
+        return jsonify({'error': 'name, weight, reps, sets are required'}), 400
+
+    doc_ref = db.collection('workouts').document(date).collection('entries').document(entry_id)
+    
+    # Проверяем, существует ли запись
+    doc = doc_ref.get()
+    if not doc.exists:
+        return jsonify({'error': 'Entry not found'}), 404
+    
+    # Получаем текущий индекс
+    current_data = doc.to_dict()
+    current_index = current_data.get('index', 0)
+    
+    # Обновляем запись, сохраняя индекс
+    updated_entry = {
+        'name': name,
+        'weight': weight,
+        'reps': reps,
+        'sets': sets,
+        'index': current_index  # Сохраняем существующий индекс
+    }
+    
+    doc_ref.update(updated_entry)
+    updated_entry['id'] = entry_id
+    return jsonify(updated_entry)
+
+# API: delete entry
+@app.route('/api/entries/<date>/<entry_id>', methods=['DELETE'])
+def delete_entry(date, entry_id):
+    doc_ref = db.collection('workouts').document(date).collection('entries').document(entry_id)
+    
+    # Проверяем, существует ли запись
+    doc = doc_ref.get()
+    if not doc.exists:
+        return jsonify({'error': 'Entry not found'}), 404
+    
+    # Удаляем запись
+    doc_ref.delete()
+    return jsonify({'success': True, 'id': entry_id})
 
 # @app.route('/')
 # def character_sheet():
