@@ -2,7 +2,7 @@ import os
 import json
 import firebase_admin
 from firebase_admin import credentials, firestore
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, render_template
 import uuid
 
 service_account = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
@@ -13,14 +13,14 @@ if service_account:
 else:
     raise ValueError("MY_CREDENTIALS environment variable is not set")
 
-app = Flask(__name__, static_folder='static', static_url_path='/')
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.debug = True
 
 db = firestore.client()
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return render_template('index.html')
 
 @app.route('/api/entries')
 def get_entries():
